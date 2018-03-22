@@ -1,1 +1,0 @@
-"./display.obj" "./main.obj" "./register.obj" "../lnk_msp430g2553.cmd" -llibc.a 
