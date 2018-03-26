@@ -11,9 +11,9 @@
 #include <string.h>
 #include <stdio.h>
 
-typedef unsigned char U8;
-typedef unsigned int  U16;
-typedef unsigned long U32;
+typedef unsigned char  U8;
+typedef unsigned short U16;
+typedef unsigned int   U32;
 
 //////// masking
 #define ISBIT(p,b)    (p & b)
