@@ -30,6 +30,9 @@ void set_clk(U8 b);
 void set_rs(U8 b);
 void set_cs(U8 b);
 
+void set_led       (U8 b);
+void set_led2      (U8 b);
+
 U8 isBtnOne (void);
 U8 isBtnTwo(void);
 

@@ -135,6 +135,6 @@ void set_cs        (U8 b)   {if(b){SETBIT(P2OUT, BIT0);} else {CLRBIT(P2OUT,  BI
 void set_clk       (U8 b)   {if(b){SETBIT(P2OUT, BIT1);} else {CLRBIT(P2OUT,  BIT1);}}
 void set_si        (U8 b)   {if(b){SETBIT(P2OUT, BIT2);} else {CLRBIT(P2OUT,  BIT2);}}
 
-U8 isBtnOne     (void){if (ISBIT(P1IN, BIT_5)){return 0u;} else {return 1u;}}
-U8 isBtnTwo     (void){if (ISBIT(P2IN, BIT_0)){return 0u;} else {return 1u;}}
+U8 isBtnOne     (void){if (ISBIT(P2IN, BIT_4)){return 0u;} else {return 1u;}}
+U8 isBtnTwo     (void){if (ISBIT(P2IN, BIT_5)){return 0u;} else {return 1u;}}
 

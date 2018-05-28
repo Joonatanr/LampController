@@ -30,5 +30,12 @@ typedef unsigned int   U32;
 #define BIT_7  0x80u
 
 #define Private static
+#define Public
+
+typedef enum
+{
+    FALSE,
+    TRUE
+} Boolean;
 
 #endif /* TYPEDEFS_H_ */

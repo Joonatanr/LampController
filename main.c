@@ -2,18 +2,12 @@
 #include "display.h"
 #include "typedefs.h"
 #include "register.h"
-
+#include "Lamp.h"
 
 /**
  * main.c
  */
 
-typedef struct
-{
-    U8 second;
-    U8 minute;
-    U8 hour;
-} timekeeper_T;
 
 Private void timer_10msec(void);
 Private void timer_1sec(void);
@@ -49,10 +43,12 @@ int main(void)
 
 	while(1)
 	{
+	    /* Called every 1 second. */
 	    if (timer_flag)
 	    {
 	        timer_flag = 0u;
 
+	        lamp_cyclic(&priv_timekeeper);
 	        /* Should probably disable interrupts just to be correct here, but realistically
 	         * the 1 second interval will be more than enough time to finish writing to display. */
 	        convertTimerString(&priv_timekeeper, timerStr);
@@ -67,6 +63,7 @@ int main(void)
 Private void timer_10msec(void)
 {
     /* TODO : Add buttons handling here. */
+    //set_backlight(isBtnOne() | isBtnTwo());
 }
 
 Private void timer_1sec(void)
