@@ -18,53 +18,6 @@
 #define PWM_PERIOD  (U32)((U32)MCU_CLOCK / (U32)PWM_FREQUENCY)
 #define PWM_INITIAL_DUTY        1100
 
-
-#define DIR_IN  (U8)0u
-#define DIR_OUT (U8)1u
-
-typedef enum
-{
-    PORT_1,
-    PORT_2,
-    PORT_3
-}port_enum;
-
-typedef enum
-{
-    IO_PORT_CS,
-    IO_PORT_RS,
-    IO_PORT_SI,
-    IO_PORT_CLK,
-    IO_PORT_BACKLIGHT,
-    IO_PORT_PWM,
-    IO_PORT_BTN_TWO,
-    IO_PORT_BTN_ONE,
-    NUMBER_OF_DEFINED_IOS
-}io_port_enum;
-
-typedef struct{
-    io_port_enum io_name;
-    port_enum port_num;
-
-    U8 bit_mask;
-    U8 dir;
-}ioport_struct;
-
-ioport_struct ports[NUMBER_OF_DEFINED_IOS] =
-{
-     /* LCD pins */
-     { IO_PORT_CS,        PORT_2, BIT_5, DIR_OUT  },
-     { IO_PORT_RS,        PORT_1, BIT_6, DIR_OUT  },
-     { IO_PORT_SI,        PORT_2, BIT_3, DIR_OUT  },
-     { IO_PORT_CLK,       PORT_2, BIT_4, DIR_OUT  },
-
-     /* General purpose IO */
-     { IO_PORT_BACKLIGHT, PORT_1, BIT_0, DIR_OUT  },
-     { IO_PORT_BTN_ONE,   PORT_1, BIT_5, DIR_IN   },
-     { IO_PORT_BTN_TWO,   PORT_2, BIT_0, DIR_IN   }
-};
-
-
 static U16 count_1sec = 0;
 
 static timer_callback callback10msec;
@@ -109,44 +62,27 @@ void register_init(timer_callback timer10msec, timer_callback timer1sec)
 
 void ports_init (void)
 {
-    U8 x;
-    P1DIR = 0x00u;
-    P2DIR = 0x00u;
-    P3DIR = 0x00u;
+    /* P1.0 --- Indicator LED           */
 
-    P1OUT = 0x00u;
-    P2OUT = 0x00u;
-    P3OUT = 0x00u;
+    /* P1.1 --- UART RxD                */
+    /* P1.2 --- UART TxD                */
 
-    for (x = 0u; x < NUMBER_OF_DEFINED_IOS; x++)
-    {
-        switch (ports[x].port_num)
-        {
-            case (PORT_1):
-                    if (ports[x].dir){
-                        SETBIT (P1DIR,ports[x].bit_mask);
-                    }else{
-                        CLRBIT (P1DIR,ports[x].bit_mask);
-                    }
-                break;
-            case (PORT_2):
-                    if (ports[x].dir){
-                        SETBIT (P2DIR,ports[x].bit_mask);
-                    }else{
-                        CLRBIT (P2DIR,ports[x].bit_mask);
-                    }
-                break;
-            case (PORT_3):
-                if (ports[x].dir){
-                        SETBIT (P3DIR,ports[x].bit_mask);
-                }else{
-                        CLRBIT (P3DIR,ports[x].bit_mask);
-                }
-                break;
-            default:
-                break;
-        }
-    }
+    /* P1.3 --- Display Backlight       */
+    /* P1.5 --- Display Register Select */
+    /* P1.6 --- Indicator LED2          */
+    /* P2.0 --- Display Chip Select     */
+    /* P2.1 --- Display Clock           */
+    /* P2.2 --- Display SI              */
+
+    /* Initialize LED pin */
+    P1DIR |= BIT0;
+    P1DIR |= BIT6;
+    /* LCD needs 4 control outputs... */
+    P1DIR |= BIT5;                /*  1.5  */
+    P2DIR |= BIT0 + BIT1 + BIT2;  /*  2.0  2.1  2.2 */
+    P1DIR |= BIT3;
+
+    P3DIR = 0u;
 }
 
 
@@ -190,11 +126,14 @@ void wait_msec (U16 ms)
     }
 }
 
-void set_backlight (U8 b)   {if(b){SETBIT(P1OUT, BIT_0);}else{CLRBIT (P1OUT, BIT_0);}}
-void set_si        (U8 b)   {if(b){SETBIT(P2OUT, BIT3);}else{CLRBIT(P2OUT, BIT3);}}
-void set_clk       (U8 b)   {if(b){SETBIT(P2OUT, BIT4);}else{CLRBIT(P2OUT, BIT4);}}
-void set_rs        (U8 b)   {if(b){SETBIT(P1OUT, BIT6);}else{CLRBIT(P1OUT, BIT6);}}
-void set_cs        (U8 b)   {if(b){SETBIT(P2OUT, BIT5);}else{CLRBIT(P2OUT, BIT5);}}
+void set_led       (U8 b)   {if(b){SETBIT(P1OUT, BIT0);} else {CLRBIT(P1OUT,  BIT0);}}
+void set_led2      (U8 b)   {if(b){SETBIT(P1OUT, BIT6);} else {CLRBIT(P1OUT,  BIT6);}}
+
+void set_backlight (U8 b)   {if(b){SETBIT(P1OUT, BIT3);} else {CLRBIT(P1OUT,  BIT3);}}
+void set_rs        (U8 b)   {if(b){SETBIT(P1OUT, BIT5);} else {CLRBIT(P1OUT,  BIT5);}}
+void set_cs        (U8 b)   {if(b){SETBIT(P2OUT, BIT0);} else {CLRBIT(P2OUT,  BIT0);}}
+void set_clk       (U8 b)   {if(b){SETBIT(P2OUT, BIT1);} else {CLRBIT(P2OUT,  BIT1);}}
+void set_si        (U8 b)   {if(b){SETBIT(P2OUT, BIT2);} else {CLRBIT(P2OUT,  BIT2);}}
 
 U8 isBtnOne     (void){if (ISBIT(P1IN, BIT_5)){return 0u;} else {return 1u;}}
 U8 isBtnTwo     (void){if (ISBIT(P2IN, BIT_0)){return 0u;} else {return 1u;}}

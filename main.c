@@ -21,7 +21,7 @@ Private void incrementTimeKeeper(void);
 Private void convertTimerString(timekeeper_T * t, char * dest_str);
 
 Private char timerStr[16];
-Private U8 timer_flag = 0u;
+Private volatile U8 timer_flag = 0u;
 Private timekeeper_T priv_timekeeper = {0u, 0u, 0u};
 
 Private disp_config_struct priv_disp_conf =
@@ -44,6 +44,8 @@ int main(void)
 	disp_set_conf(&priv_disp_conf);
 
 	disp_init();
+
+	set_backlight(1u);
 
 	while(1)
 	{
