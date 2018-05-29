@@ -105,8 +105,8 @@ Private void ChangeState(void)
 
     UpdateDisplayText();
 
-    /* TODO : Drive digital input accordingly.*/
-    set_led((U8)isOn);
+    /* Currently LED output is connected directly to LED1. */
+    set_led1((U8)isOn);
 }
 
 
