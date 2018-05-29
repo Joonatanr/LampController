@@ -91,9 +91,7 @@ Public void handleButtonPress(Button b)
 /**************************************** Private function definitions  **********************************************/
 Private void ChangeState(void)
 {
-    priv_timekeeper.hour = 0u;
-    priv_timekeeper.minute = 0u;
-    priv_timekeeper.second = 0u;
+    timekeeper_setTimerValue(&priv_timekeeper, 0u, 0u, 0u);
 
     /* Switch the current state */
     if (isOn == TRUE)

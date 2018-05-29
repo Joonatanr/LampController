@@ -21,6 +21,7 @@ extern void timekeeper_increment(time_T * timekeeper);
 extern void timekeeper_addToTimer(const time_T * value, time_T * dest);
 extern void timekeeper_subtractFromTimer(const time_T * value, time_T * dest);
 extern void timekeeper_getTimerString(time_T * t, char * dest_str);
+extern void timekeeper_setTimerValue(time_T * t, U8 hour, U8 minute, U8 second);
 
 
 #endif /* TIMEKEEPER_H_ */

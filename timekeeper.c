@@ -108,6 +108,7 @@ Public void timekeeper_subtractFromTimer(const time_T * value, time_T * dest)
 
 Public void timekeeper_getTimerString(time_T * t, char * dest_str)
 {
+    __disable_interrupt();
     dest_str[0] = '0' + (t->hour / 10u);
     dest_str[1] = '0' + (t->hour % 10u);
     dest_str[2] = ':';
@@ -117,4 +118,16 @@ Public void timekeeper_getTimerString(time_T * t, char * dest_str)
     dest_str[6] = '0' + (t->second / 10u);
     dest_str[7] = '0' + (t->second % 10u);
     dest_str[8] = 0;
+    __enable_interrupt();
+}
+
+
+Public void timekeeper_setTimerValue(time_T * t, U8 hour, U8 minute, U8 second)
+{
+    __disable_interrupt();
+    t->hour = hour;
+    t->minute = minute;
+    t->second = second;
+
+    __enable_interrupt();
 }
