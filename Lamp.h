@@ -11,16 +11,10 @@
 #include "typedefs.h"
 #include "register.h"
 
-typedef struct
-{
-    U8 second;
-    U8 minute;
-    U8 hour;
-} time_obj;
 
-Public void lamp_cyclic(void);
-Public void lamp_init(void);
+extern void lamp_cyclic(void);
+extern void lamp_init(void);
 
-Public void handleButtonPress(Button b);
+extern void handleButtonPress(Button b);
 
 #endif /* LAMP_H_ */
