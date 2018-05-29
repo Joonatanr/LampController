@@ -8,15 +8,12 @@
  * main.c
  */
 
-
 Private void timer_10msec(void);
 Private void timer_1sec(void);
-Private void incrementTimeKeeper(void);
-Private void convertTimerString(timekeeper_T * t, char * dest_str);
-
-Private char timerStr[16];
 Private volatile U8 timer_flag = 0u;
-Private timekeeper_T priv_timekeeper = {0u, 0u, 0u};
+
+Boolean isBtn1Pressed = FALSE;
+Boolean isBtn2Pressed = FALSE;
 
 Private disp_config_struct priv_disp_conf =
 {
@@ -31,8 +28,6 @@ int main(void)
 {
 	WDTCTL = WDTPW | WDTHOLD;	// stop watchdog timer
 
-	memset(timerStr, 0u, 16u);
-
 	register_init(timer_10msec, timer_1sec);
 
 	disp_set_conf(&priv_disp_conf);
@@ -41,18 +36,15 @@ int main(void)
 
 	set_backlight(1u);
 
+	lamp_init();
+
 	while(1)
 	{
 	    /* Called every 1 second. */
 	    if (timer_flag)
 	    {
 	        timer_flag = 0u;
-
-	        lamp_cyclic(&priv_timekeeper);
-	        /* Should probably disable interrupts just to be correct here, but realistically
-	         * the 1 second interval will be more than enough time to finish writing to display. */
-	        convertTimerString(&priv_timekeeper, timerStr);
-	        disp_write_string(timerStr, 0u, DISP_HIGH);
+	        lamp_cyclic();
 	    }
 	}
 
@@ -62,52 +54,36 @@ int main(void)
 
 Private void timer_10msec(void)
 {
-    /* TODO : Add buttons handling here. */
-    //set_backlight(isBtnOne() | isBtnTwo());
+    /* We catch the rising edge of a button press. */
+    if (isBtnOne() && !isBtn1Pressed)
+    {
+        isBtn1Pressed = TRUE;
+        handleButtonPress(BTN_ONE);
+    }
+    else if(!isBtnOne())
+    {
+        isBtn1Pressed = FALSE;
+    }
+
+
+    if (isBtnTwo() && !isBtn2Pressed)
+    {
+        isBtn2Pressed = TRUE;
+        handleButtonPress(BTN_TWO);
+    }
+    else if(!isBtnTwo())
+    {
+        isBtn2Pressed = FALSE;
+    }
 }
 
 Private void timer_1sec(void)
 {
     if (bReady)
     {
-        incrementTimeKeeper();
+        /*incrementTimeKeeper();*/
         timer_flag = 1u;
     }
-}
-
-
-Private void incrementTimeKeeper(void)
-{
-    priv_timekeeper.second++;
-    if (priv_timekeeper.second >= 60u)
-    {
-        priv_timekeeper.second = 0u;
-        priv_timekeeper.minute++;
-
-        if (priv_timekeeper.minute >= 60u)
-        {
-            priv_timekeeper.minute = 0u;
-            priv_timekeeper.hour++;
-
-            if (priv_timekeeper.hour >= 24u)
-            {
-                priv_timekeeper.hour = 0u;
-            }
-        }
-    }
-}
-
-Private void convertTimerString(timekeeper_T * t, char * dest_str)
-{
-    dest_str[0] = '0' + (t->hour / 10u);
-    dest_str[1] = '0' + (t->hour % 10u);
-    dest_str[2] = ':';
-    dest_str[3] = '0' + (t->minute / 10u);
-    dest_str[4] = '0' + (t->minute % 10u);
-    dest_str[5] = ':';
-    dest_str[6] = '0' + (t->second / 10u);
-    dest_str[7] = '0' + (t->second % 10u);
-    dest_str[8] = 0;
 }
 
 

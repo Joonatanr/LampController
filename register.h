@@ -17,6 +17,13 @@ extern U8 bReady;
 
 typedef void (*timer_callback)(void);
 
+typedef enum
+{
+    BTN_ONE,
+    BTN_TWO,
+    NUMBER_OF_BUTTONS
+} Button;
+
 
 void register_init (timer_callback timer10msec, timer_callback timer1sec);
 void timer_init (void);

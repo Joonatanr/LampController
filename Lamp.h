@@ -9,16 +9,18 @@
 #define LAMP_H_
 
 #include "typedefs.h"
+#include "register.h"
 
 typedef struct
 {
     U8 second;
     U8 minute;
     U8 hour;
-} timekeeper_T;
+} time_obj;
 
-Public void lamp_cyclic(timekeeper_T * time);
+Public void lamp_cyclic(void);
+Public void lamp_init(void);
 
-
+Public void handleButtonPress(Button b);
 
 #endif /* LAMP_H_ */
