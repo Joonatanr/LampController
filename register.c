@@ -11,12 +11,6 @@
 
 
 #define MCU_CLOCK           1000000
-#define PWM_FREQUENCY       50      // In Hertz, ideally 50Hz.
-
-//Maybe still needs to check if this works?
-//#define PWM_PERIOD              20000
-#define PWM_PERIOD  (U32)((U32)MCU_CLOCK / (U32)PWM_FREQUENCY)
-#define PWM_INITIAL_DUTY        1100
 
 static U16 count_1sec = 0;
 
@@ -69,7 +63,7 @@ void ports_init (void)
 
     /* P1.3 --- Display Backlight       */
     /* P1.5 --- Display Register Select */
-    /* P1.6 --- Indicator LED2          */
+    /* P1.6 --- Indicator LED2 --- Currently also Lamp output         */
     /* P2.0 --- Display Chip Select     */
     /* P2.1 --- Display Clock           */
     /* P2.2 --- Display SI              */
