@@ -1,8 +1,10 @@
 
+
 #include "display.h"
 #include "typedefs.h"
 #include "register.h"
 #include "Lamp.h"
+#include "flash.h"
 
 /**
  * main.c
@@ -24,6 +26,11 @@ Private disp_config_struct priv_disp_conf =
      .delay_func = wait_msec
 };
 
+U8 test_data[10u];
+
+volatile U8 test_byte1;
+volatile U8 test_byte2;
+
 int main(void)
 {
 	WDTCTL = WDTPW | WDTHOLD;	// stop watchdog timer
@@ -37,6 +44,16 @@ int main(void)
 	set_backlight(1u);
 
 	lamp_init();
+
+	/* Test our flash writing function */
+	memset(test_data, 0xDAu, sizeof(test_data));
+
+	flash_erase();
+	flash_write(0u, test_data, 10u);
+
+	test_byte1 = flash_read_byte(0u);
+	test_byte2 = flash_read_byte(1u);
+	/* End of test. */
 
 	while(1)
 	{
