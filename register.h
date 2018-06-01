@@ -17,13 +17,6 @@ extern U8 bReady;
 
 typedef void (*timer_callback)(void);
 
-typedef enum
-{
-    BTN_ONE,
-    BTN_TWO,
-    NUMBER_OF_BUTTONS
-} Button;
-
 
 void register_init (timer_callback timer10msec, timer_callback timer1sec);
 void timer_init (void);
@@ -40,7 +33,5 @@ void set_cs(U8 b);
 void set_led1       (U8 b);
 void set_led2      (U8 b);
 
-U8 isBtnOne (void);
-U8 isBtnTwo(void);
 
 #endif /* REGISTER_H_ */

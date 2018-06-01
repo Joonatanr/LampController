@@ -15,6 +15,5 @@
 extern void lamp_cyclic(void);
 extern void lamp_init(void);
 
-extern void handleButtonPress(Button b);
 
 #endif /* LAMP_H_ */

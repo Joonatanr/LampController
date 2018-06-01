@@ -7,7 +7,7 @@
 
 #include "display.h"
 #include "string.h"
-
+#include "misc.h"
 
 ////Display driver for EA-DOG162, designed to work with software SPI.
 #define DL_MODE                 (U8)0x01u
@@ -28,6 +28,7 @@ static void write_charcode      (U8 code);
 static void execute_LCD         (U8 register_select, U8 data);
 
 
+char helperString [16];
 
 /*********************************/
 /* Public function declarations  */
@@ -75,8 +76,6 @@ void disp_reset(void)
 
 void disp_write_char (char c,U8 address, U8 line)
 {
-   //Funktsiooni idee on see, et kirjuta see character sinna kohta, ilma displayd clearimata
-   /*write_disp_mem (c,address);*/
    if (address > 15u)
    {
        return;
@@ -88,6 +87,25 @@ void disp_write_char (char c,U8 address, U8 line)
 
    DDR_address_set(address);
    write_charcode(c);
+}
+
+
+void disp_write_number(long num, U8 pos, U8 line, U8 max_len)
+{
+    U8 ix;
+    U8 len;
+    for (ix = pos; ix < (max_len + pos); ix++)
+    {
+        disp_empty_char(ix, line);
+    }
+
+    long2string(num, helperString);
+    len = strlen(helperString);
+
+    for (ix = 0u; ix < len; ix++)
+    {
+        disp_write_char(helperString[ix], pos++, line);
+    }
 }
 
 

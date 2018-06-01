@@ -9,6 +9,8 @@
 #include "Lamp.h"
 #include "display.h"
 #include "timekeeper.h"
+#include "buttons.h"
+#include "misc.h"
 
 //#define DEBUG_ON
 
@@ -16,7 +18,8 @@
 
 Private void ChangeState(void);
 Private void UpdateDisplayText(void);
-
+Private void handleButtonPressUp(void);
+Private void handleButtonPressDown(void);
 
 /**************************************** Private variable definitions  **********************************************/
 
@@ -29,13 +32,15 @@ Private time_T priv_timekeeper = {0u, 0u, 0u};
 Private char timerStr[16];
 
 
-
 /**************************************** Public function definitions  **********************************************/
 
 /* Called once during startup. */
 Public void lamp_init(void)
 {
     memset(timerStr, 0u, 16u);
+
+    buttons_subscribeListener(BUTTON_ONE, handleButtonPressUp);
+    buttons_subscribeListener(BUTTON_TWO, handleButtonPressDown);
 }
 
 
@@ -82,13 +87,26 @@ Public void lamp_cyclic(void)
 }
 
 
-Public void handleButtonPress(Button b)
+/**************************************** Private function definitions  **********************************************/
+
+static U8 test_variable = 10u;
+
+Private void handleButtonPressUp(void)
 {
     /* TODO : Implement this. */
+    test_variable++;
+    disp_write_number(test_variable, 11u, 0u, 3u);
 }
 
 
-/**************************************** Private function definitions  **********************************************/
+Private void handleButtonPressDown(void)
+{
+    /* TODO : Implement this. */
+    test_variable--;
+    disp_write_number(test_variable, 11u, 0u, 3u);
+}
+
+
 Private void ChangeState(void)
 {
     timekeeper_setTimerValue(&priv_timekeeper, 0u, 0u, 0u);

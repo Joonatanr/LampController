@@ -5,6 +5,7 @@
 #include "register.h"
 #include "Lamp.h"
 #include "flash.h"
+#include "buttons.h"
 
 /**
  * main.c
@@ -43,6 +44,8 @@ int main(void)
 
 	set_backlight(1u);
 
+	buttons_init();
+
 	lamp_init();
 
 	/* Test our flash writing function */
@@ -71,26 +74,15 @@ int main(void)
 
 Private void timer_10msec(void)
 {
-    /* We catch the rising edge of a button press. */
-    if (isBtnOne() && !isBtn1Pressed)
-    {
-        isBtn1Pressed = TRUE;
-        handleButtonPress(BTN_ONE);
-    }
-    else if(!isBtnOne())
-    {
-        isBtn1Pressed = FALSE;
-    }
+    static U8 msec_100_cnt = 0u;
+    buttons_cyclic10msec();
 
+    msec_100_cnt++;
 
-    if (isBtnTwo() && !isBtn2Pressed)
+    if (msec_100_cnt >= 10u)
     {
-        isBtn2Pressed = TRUE;
-        handleButtonPress(BTN_TWO);
-    }
-    else if(!isBtnTwo())
-    {
-        isBtn2Pressed = FALSE;
+        msec_100_cnt = 0u;
+        buttons_cyclic100msec();
     }
 }
 
