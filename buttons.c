@@ -74,8 +74,6 @@ Private const ButtonConf priv_button_config[NUMBER_OF_BUTTONS] =
 Private ButtonState priv_button_state[NUMBER_OF_BUTTONS];
 
 
-//Set up buttons as inputs.
-//4.7, 5.5, 5.4, 6.4
 Public void buttons_init(void)
 {
     U8 ix;
@@ -92,6 +90,7 @@ Public void buttons_init(void)
         priv_button_state[ix].button_hold = FALSE;
         priv_button_state[ix].mode = FALLING_EDGE;
 
+        //Set up buttons as inputs.
 #ifdef MSP432_BUTTONS
         //For MSP432
         GPIO_setAsInputPin(priv_button_config[ix].port, priv_button_config[ix].pin);
@@ -235,6 +234,7 @@ Public void buttons_unsubscribeAll(void)
     for (ix = 0u; ix < NUMBER_OF_BUTTONS; ix++)
     {
         priv_button_state[ix].listener_press_func = NULL;
+        priv_button_state[ix].listener_hold_func = NULL;
     }
     EXIT_CRITICAL_SECTION();
 }
