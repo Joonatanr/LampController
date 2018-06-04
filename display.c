@@ -143,7 +143,7 @@ void disp_clear_low (void)
     U8 i;
     for(i = 0u; i < 16u; i++)
     {
-        disp_empty_char(i + 64u, DISP_LOW);
+        disp_empty_char(i, DISP_LOW);
     }
 }
 

@@ -11,7 +11,7 @@
 #include "typedefs.h"
 
 
-#define FLASH_INFO_AREA_BEGIN_ADDR 0x10C0u /* Start of INFOA area */
+#define FLASH_INFO_AREA_BEGIN_ADDR 0x1080u /* Start of INFOB area */
 #define FLASH_INFO_AREA_SIZE 0x40u         /* 64 bytes - Should be more than enough */
 
 

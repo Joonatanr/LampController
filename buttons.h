@@ -28,6 +28,9 @@ typedef enum
     NUMBER_OF_BUTTONS
 } ButtonType;
 
+#define UP_BUTTON BUTTON_TWO
+#define DOWN_BUTTON BUTTON_ONE
+
 
 /**************************************************************/
 

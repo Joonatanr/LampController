@@ -94,8 +94,9 @@ Public void timekeeper_subtractFromTimer(const time_T * value, time_T * dest)
     hour_value -= value->hour;
     if (hour_value < 0)
     {
-        second_value = 0;
-        minute_value = 0;
+        hour_value = 0u;
+        second_value = 0u;
+        minute_value = 0u;
     }
 
     dest->hour =    (U8)hour_value;

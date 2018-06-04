@@ -72,6 +72,7 @@ void flash_write(U8 data_begin_slot, const U8 * data, U8 data_size)
 
 U8 flash_read_byte(U8 slot)
 {
+    while ((FCTL3 & BUSY) != 0);
     U8 * flash_ptr = (U8*)(FLASH_INFO_AREA_BEGIN_ADDR + slot);
     return * flash_ptr;
 }

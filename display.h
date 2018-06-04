@@ -14,7 +14,7 @@
 #define DISP_HIGH 0
 #define DISP_LOW  1
 
-#define PADDING_ENABLED
+//#define PADDING_ENABLED
 
 
 typedef void (*disp_port_func)(unsigned char b);
