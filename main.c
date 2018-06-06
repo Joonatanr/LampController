@@ -24,12 +24,6 @@ Private disp_config_struct priv_disp_conf =
      .delay_func = wait_msec
 };
 
-#if 0
-U8 test_data[10u];
-
-volatile U8 test_byte1;
-volatile U8 test_byte2;
-#endif
 
 int main(void)
 {
@@ -47,17 +41,6 @@ int main(void)
 
 	lamp_init();
 
-#if 0
-	/* Test our flash writing function */
-	memset(test_data, 0xDAu, sizeof(test_data));
-
-	flash_erase();
-	flash_write(0u, test_data, 10u);
-
-	test_byte1 = flash_read_byte(0u);
-	test_byte2 = flash_read_byte(1u);
-	/* End of test. */
-#endif
 	while(1)
 	{
 	    /* Called every 1 second. */
